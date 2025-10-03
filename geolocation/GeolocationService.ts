@@ -16,7 +16,11 @@ export default class GeolocationService {
       if (cachedData) return cachedData;
 
       const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=geojson&lat=${lat}&lon=${lng}`;
-      const response = await axios.get(nominatimUrl);
+      const response = await axios.get(nominatimUrl, {
+        headers: {
+          'User-Agent': 'emergency-numbers-next-js(janbryanmartirez@gmail.com)',
+        },
+      });
       await cache.set(cacheKey, response.data, 60);
       return response.data;
     } catch (error) {
