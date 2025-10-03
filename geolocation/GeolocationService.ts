@@ -11,17 +11,19 @@ export default class GeolocationService {
       const roundedLat = lat.toFixed(4);
       const roundedLng = lng.toFixed(4);
       const cacheKey = `geolocation:${roundedLat}:${roundedLng}`;
-
       const cachedData = cache.get(cacheKey);
-      if (cachedData) return cachedData;
-
+      if (cachedData) {
+        console.log('Cache works on Vercel');
+        return cachedData;
+      }
+      console.log('Cache was not used');
       const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=geojson&lat=${lat}&lon=${lng}`;
       const response = await axios.get(nominatimUrl, {
         headers: {
           'User-Agent': 'emergency-numbers-next-js(janbryanmartirez@gmail.com)',
         },
       });
-      await cache.set(cacheKey, response.data, 60);
+      await cache.set(cacheKey, response.data, 180);
       return response.data;
     } catch (error) {
       throw new Error('Failed to fetch location');
