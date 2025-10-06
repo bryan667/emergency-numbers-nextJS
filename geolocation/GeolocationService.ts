@@ -1,7 +1,5 @@
 import axios from 'axios';
-import NodeCache from 'node-cache';
-
-const cache = new NodeCache({ stdTTL: 100 });
+import cache from '@/lib/cache';
 
 export default class GeolocationService {
   constructor() {}
@@ -17,13 +15,13 @@ export default class GeolocationService {
         return cachedData;
       }
       console.log('Cache was not used');
-      const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=geojson&lat=${lat}&lon=${lng}`;
+      const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=geojson&lat=${roundedLat}&lon=${roundedLng}`;
       const response = await axios.get(nominatimUrl, {
         headers: {
           'User-Agent': 'emergency-numbers-next-js(janbryanmartirez@gmail.com)',
         },
       });
-      await cache.set(cacheKey, response.data, 180);
+      await cache.set(cacheKey, response.data);
       return response.data;
     } catch (error) {
       throw new Error('Failed to fetch location');

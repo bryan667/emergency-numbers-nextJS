@@ -22,7 +22,7 @@ export const GET = async (req: NextRequest) => {
     return NextResponse.json(results);
   } catch (e) {
     return NextResponse.json(
-      { error: 'unable to get geolocation' },
+      { error: `failed geolocation - ${e}` },
       { status: 400 },
     );
   }

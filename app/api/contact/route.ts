@@ -20,7 +20,7 @@ export const GET = async (req: NextRequest) => {
     return NextResponse.json(contacts);
   } catch (e) {
     return NextResponse.json(
-      { error: 'failed to get all possible contacts' },
+      { error: `failed to get all possible contacts - ${e}` },
       { status: 400 },
     );
   }
